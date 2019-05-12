@@ -1,5 +1,7 @@
 {
   "name": "oagt3",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }

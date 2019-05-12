@@ -5,18 +5,38 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+// User Services
+import { DatabaseService } from './services/database.service';
+import { ApiService } from './services/api.service';
+
+// Native Services
+import { SQLite } from '@ionic-native/sqlite/ngx';
+import { SqliteDbCopy } from '@ionic-native/sqlite-db-copy/ngx';
+import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
+import { ModalComponent } from './components/modal/modal.component';
+
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
+  declarations: [ AppComponent, ModalComponent ],
+  entryComponents: [ ModalComponent ],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    
+    NativeStorage,
+    SQLite,
+    SqliteDbCopy,
+    SpinnerDialog,
+    
+    DatabaseService,
+    ApiService
   ],
   bootstrap: [AppComponent]
 })
