@@ -10,7 +10,8 @@
 <ion-content>
 
   <div class="avatar-lg">
-    <ion-img [src]="item.avatarUrl"></ion-img>
+    <ion-img *ngIf="item.avatar" [src]="item.avatar"></ion-img>
+    <ion-img *ngIf="!item.avatar" [src]="'http://api.skype.com/users/echo/profile/avatar?size=l'"></ion-img>
     <div class="avatar-text">
       <h2> {{ item.name }} </h2>
       <p> {{ item.designation }}</p>
@@ -18,28 +19,30 @@
   </div>
 
   <ion-list>
-    <ion-item button>
+    <ion-item button [href]="'tel:+91' + item.mobile" >
       <ion-icon slot="start" name="call">
       </ion-icon>
       <ion-label>
         <h2>{{ item.mobile }}</h2>
-        <p>Mobile, {{ item.carrier }} </p>
+        <p> Mobile, {{ item.carrier }} </p>
       </ion-label>
-      <ion-button fill="clear" shape="round" slot="end" color="secondary">
+      <ion-button fill="clear" shape="round" slot="end" color="secondary" [href]="'sms:+91' + item.mobile">
         <ion-icon slot="icon-only" name="chatbubbles"></ion-icon>
       </ion-button>
     </ion-item>
 
-    <ion-item button>
-      <ion-icon slot="start" name="call">
-      </ion-icon>
-      <ion-label>
-        <h2>{{ item.office }}</h2>
-        <p> Office, BSNL </p>
-      </ion-label>
-    </ion-item>
+    <ion-list *ngFor="let contact of contacts">
+      <ion-item button *ngIf="contact.number" [href]="'tel:+91' + contact.number">
+        <ion-icon slot="start" name="call">
+        </ion-icon>
+        <ion-label>
+          <h2>{{ contact.number }}</h2>
+          <p> {{ contact.name }} </p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
 
-    <ion-item button>
+    <ion-item button *ngIf="item.address">
       <ion-icon slot="start" name="pin">
       </ion-icon>
       <ion-label>
@@ -48,7 +51,7 @@
       </ion-label>
     </ion-item>
 
-    <ion-item button>
+    <ion-item button *ngIf="item.email" [href]="'mailto:' + item.email">
       <ion-icon slot="start" name="mail">
       </ion-icon>
       <ion-label>

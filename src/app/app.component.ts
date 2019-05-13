@@ -17,7 +17,6 @@ export class AppComponent {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private api: ApiService,
     private router: Router,
     private navController: NavController,
     private nativeStorage: NativeStorage,
@@ -37,28 +36,32 @@ export class AppComponent {
       inputs: [
         {
           name: 'cpf',
-          type: 'text',
+          type: 'number',
           placeholder: 'CPF Number'
         },
         {
           name: 'mobile',
           type: 'number',
-          placeholder: 'Mobile No.'
+          placeholder: 'Mobile ( Type anything )'
         }
       ],
       buttons: [
         {
           text: 'Login',
           handler: (data) => {
-            this.nativeStorage.setItem('cachedCredentials', { cpf: data.cpf, lastLoggedIn: 'now()' })
-            .then(
-              () => {
-                alert.dismiss();
-                console.log('Stored item!');
-              },
-              error => console.error('Error storing item', error)
-            );
+            
+            if( data.cpf && data.mobile ) {
+              this.nativeStorage.setItem('cachedCredentials', { cpf: data.cpf, lastLoggedIn: 'now()' })
+              .then(
+                () => {
+                  alert.dismiss();
+                  console.log('Stored item!');
+                },
+                error => console.error('Error storing item', error)
+              );
+            }
             return false;
+
           }
         }
       ]
@@ -81,7 +84,7 @@ export class AppComponent {
         },
         error => {
           console.log(JSON.stringify(error))
-          this.presentAlertPrompt();
+          // this.presentAlertPrompt();
         }
       );
 
@@ -101,7 +104,7 @@ export class AppComponent {
   async presentToastWithOptions() {
     const toast = await this.toastController.create({
       // header: 'Are you sure',
-      duration: 3000,
+      duration: 2500,
       message: 'Do you really want to exit?',
       position: 'bottom',
       buttons: [

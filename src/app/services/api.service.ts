@@ -8,7 +8,7 @@ import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
 })
 export class ApiService {
 
-  resp:any = [];
+  journal:any = [];
 
   constructor(
     private http: HttpClient,
@@ -20,9 +20,8 @@ export class ApiService {
 
   fetchJournal() {
     this.spinner.show();
-    this.http.get('https://oagtapp.xyz/apis/index.php').subscribe(res => {
-      this.resp = res['data'];
-      console.log( JSON.stringify(res) );
+    this.http.get('https://oagtapp.xyz/apis/getJournal.php').subscribe(res => {
+      this.journal = res;
       this.updateDatabase();
       this.spinner.hide();
     });
@@ -30,13 +29,22 @@ export class ApiService {
   }
 
   updateDatabase() {
-    this.resp.forEach( data => {
+    this.journal.forEach( data => {
       switch (data.operation) {
         case 'insert':
           this.database.addPerson([
-            data.id,
+            data.cpf,
             data.name,
-            data.designation
+            data.designation,
+            data.avatar,
+            data.mobile,
+            data.office_ext,
+            data.office_alt,
+            data.residence_ext,
+            data.residence_alt,
+            data.address,
+            data.email,
+            data.carrier
           ])
           break;
         
@@ -44,12 +52,21 @@ export class ApiService {
           this.database.updatePerson([
             data.name,
             data.designation,
-            data.id,
+            data.avatar,
+            data.mobile,
+            data.office_ext,
+            data.office_alt,
+            data.residence_ext,
+            data.residence_alt,
+            data.address,
+            data.email,
+            data.carrier,
+            data.cpf,
           ])
           break;
 
         case 'delete':
-          this.database.deletePerson(data.id);
+          this.database.deletePerson(data.cpf);
           break;
           
         default: break;

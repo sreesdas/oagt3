@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DatabaseService } from '../services/database.service';
+import { DatabaseService, People } from '../services/database.service';
 
 @Component({
   selector: 'app-people-detail',
@@ -10,26 +10,29 @@ import { DatabaseService } from '../services/database.service';
 export class PeopleDetailPage implements OnInit {
 
   id: string;
-
-  item = {
-    name: 'Sreenath S Das',
-    designation: 'EE Elex',
-    avatarUrl: 'https://media.licdn.com/dms/image/C4E03AQGkbJUl1E4VFA/profile-displayphoto-shrink_200_200/0?e=1562198400&v=beta&t=2QLNjqcMnSdqOQrQAYFydQWNfPHGUVrUSIiQF4CfXHg',
-    carrier: 'Airtel',
-    mobile: '8259950403',
-    office: '3311',
-    office_alt: '2363451',
-    residence: '4106',
-    residence_alt: '2373311',
-    address: 'B109, North Colony',
-    email: 'Das_Sreenath@ongc.co.in',
-    birthday: '',
-  }
+  item: People;
+  contacts: any = [];
 
   constructor(
     private route: ActivatedRoute,
     private database: DatabaseService
-  ) { }
+  ) { 
+
+    // this.item = {
+    //   cpf: '',
+    //   name: '',
+    //   designation: '',
+    //   avatar: '',
+    //   mobile: '',
+    //   office_ext: '',
+    //   office_alt: '',
+    //   residence_ext: '',
+    //   residence_alt: '',
+    //   address: '',
+    //   email: '',
+    //   carrier: ''
+    // };
+  }
 
   ngOnInit() {
     this.id = this.route.snapshot.paramMap.get('id');
@@ -37,16 +40,16 @@ export class PeopleDetailPage implements OnInit {
     this.database.getDatabaseState().subscribe( ready => {
       if(ready){
         this.database.readSinglePerson(this.id).then( data => {
-          this.item.name = data.name;
-          this.item.designation = data.designation;
+          this.item = data;
+          this.contacts = [
+            { 'name': 'Office Ext.', 'number' : this.item.office_ext },
+            { 'name': 'Office', 'number' : this.item.office_alt },
+            { 'name': 'Residence Ext.', 'number' : this.item.residence_ext },
+            { 'name': 'Residence', 'number' : this.item.residence_alt }
+          ]
         })
       }
     })
-  }
-
-  add() {
-    let p = [4, 'Himanshu Martoliya', 'M(Prog'];
-    this.database.addPerson(p);
   }
 
 }
