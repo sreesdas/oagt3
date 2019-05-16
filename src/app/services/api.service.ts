@@ -24,6 +24,10 @@ export class ApiService {
       this.journal = res;
       this.updateDatabase();
       this.spinner.hide();
+      console.log(JSON.stringify(res[0]));
+    }, err => {
+      console.log(JSON.stringify(err));
+      this.spinner.hide();
     });
 
   }

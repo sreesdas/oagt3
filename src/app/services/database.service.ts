@@ -93,6 +93,33 @@ export class DatabaseService {
     .catch(e => console.log(e));
   }
 
+  searchPeople(searchString:string) {
+    let people: People[] = [];
+    this.db.executeSql(`select * from people where name like '%${searchString}%'`, [])
+    .then((data) => {
+      if( data.rows.length > 0) {
+        for(var i=0; i<data.rows.length; ++i ) {
+          people.push({
+            cpf: data.rows.item(i).cpf,
+            name: data.rows.item(i).name,
+            designation: data.rows.item(i).designation,
+            avatar: data.rows.item(i).avatar,
+            mobile: data.rows.item(i).mobile,
+            office_ext: data.rows.item(i).office_ext,
+            office_alt: data.rows.item(i).office_alt,
+            residence_ext: data.rows.item(i).residence_ext,
+            residence_alt: data.rows.item(i).residence_alt,
+            address: data.rows.item(i).address,
+            email: data.rows.item(i).email,
+            carrier: data.rows.item(i).carrier
+          });
+        }
+      }
+      this.people.next(people);
+    })
+    .catch(e => console.log(JSON.stringify(e)));
+  }
+
   readAllPeople() {
     let people: People[] = [];
     
@@ -118,7 +145,7 @@ export class DatabaseService {
       }
       this.people.next(people);
     })
-    .catch(e => console.log(e));
+    .catch(e => console.log(JSON.stringify(e)));
   }
 
   readSinglePerson(id:string): Promise<any> {
@@ -141,11 +168,11 @@ export class DatabaseService {
       };
 
     })
-    .catch(e => console.log(e));
+    .catch(e => console.log(JSON.stringify(e)));
   }
 
   updatePerson(person: any) {
-    let data:any = person; //[ person.name, person.designation ];
+    let data:any = person;
     this.db.executeSql(`
       update people set name=?, designation=?, avatar=?, mobile=?,
       office_ext=?, office_alt=?, residence_ext=?, residence_alt=?, address=?, 
@@ -169,7 +196,7 @@ export class DatabaseService {
 
     console.log(JSON.stringify(person));
 
-    let data:any = person; //[person.id, person.name, person.designation];
+    let data:any = person;
     this.db.executeSql(`
       insert into people( cpf, name, designation, avatar, mobile,
       office_ext, office_alt, residence_ext, residence_alt, address, 

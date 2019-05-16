@@ -6,6 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { ApiService } from './services/api.service';
 import { Router } from '@angular/router';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,7 @@ export class AppComponent {
     private nativeStorage: NativeStorage,
     private alertController: AlertController,
     private toastController: ToastController,
+    private http: HttpClient
   ) {
     this.initializeApp();
     this.statusBar.styleBlackTranslucent();
@@ -50,16 +52,25 @@ export class AppComponent {
           text: 'Login',
           handler: (data) => {
             
-            if( data.cpf && data.mobile ) {
-              this.nativeStorage.setItem('cachedCredentials', { cpf: data.cpf, lastLoggedIn: 'now()' })
-              .then(
-                () => {
-                  alert.dismiss();
-                  console.log('Stored item!');
-                },
-                error => console.error('Error storing item', error)
-              );
-            }
+            this.http.post('https://oagtapp.xyz/apis/login.php', {
+              cpf: data.cpf,
+              mobile: data.mobile
+            })
+            .subscribe( res => {
+                if( res['status'] == 'success' ){
+                  console.log( JSON.stringify(res) );
+
+                  this.nativeStorage.setItem('cachedCredentials', { cpf: data.cpf, lastLoggedIn: 'now()' })
+                  .then(
+                    () => {
+                      alert.dismiss();
+                      console.log('Stored item!');
+                    },
+                    error => console.error('Error storing item', error)
+                  );
+                }
+            })
+
             return false;
 
           }
@@ -72,7 +83,7 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.styleLightContent();
       this.splashScreen.hide();
 
       this.nativeStorage.getItem('cachedCredentials')
@@ -84,7 +95,7 @@ export class AppComponent {
         },
         error => {
           console.log(JSON.stringify(error))
-          // this.presentAlertPrompt();
+          this.presentAlertPrompt();
         }
       );
 
