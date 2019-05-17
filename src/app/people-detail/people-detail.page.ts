@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DatabaseService, People } from '../services/database.service';
+import { CallNumber } from '@ionic-native/call-number/ngx';
 
 @Component({
   selector: 'app-people-detail',
@@ -15,23 +16,24 @@ export class PeopleDetailPage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private database: DatabaseService
+    private database: DatabaseService,
+    private callNumber: CallNumber
   ) { 
 
-    // this.item = {
-    //   cpf: '',
-    //   name: '',
-    //   designation: '',
-    //   avatar: '',
-    //   mobile: '',
-    //   office_ext: '',
-    //   office_alt: '',
-    //   residence_ext: '',
-    //   residence_alt: '',
-    //   address: '',
-    //   email: '',
-    //   carrier: ''
-    // };
+    this.item = {
+      cpf: '',
+      name: '',
+      designation: '',
+      avatar: '',
+      mobile: '',
+      office_ext: '',
+      office_alt: '',
+      residence_ext: '',
+      residence_alt: '',
+      address: '',
+      email: '',
+      carrier: ''
+    };
   }
 
   ngOnInit() {
@@ -50,6 +52,14 @@ export class PeopleDetailPage implements OnInit {
         })
       }
     })
+  }
+
+  call( number: string ) {
+    this.callNumber.callNumber( "+91" + number, true)
+    .then(res => console.log('Launched dialer!', res))
+    .catch(err => console.log('Error launching dialer', err));
+
+    this.database.addFavorite(this.item.cpf);
   }
 
 }

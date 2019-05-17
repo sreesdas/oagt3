@@ -87,10 +87,47 @@ export class DatabaseService {
     })
     .then((db: SQLiteObject) => {
       this.db = db;
-      this.readAllPeople();
+      // this.readAllPeople();
+      this.readFavourites();
       this.dbReady.next(true);
     })
     .catch(e => console.log(e));
+  }
+
+  readFavourites() {
+    let people: People[] = [];
+    this.db.executeSql(`select p.* from people p inner join favorites f on p.cpf = f.cpf`, [])
+    .then((data) => {
+      if( data.rows.length > 0) {
+        for(var i=0; i<data.rows.length; ++i ) {
+          people.push({
+            cpf: data.rows.item(i).cpf,
+            name: data.rows.item(i).name,
+            designation: data.rows.item(i).designation,
+            avatar: data.rows.item(i).avatar,
+            mobile: data.rows.item(i).mobile,
+            office_ext: data.rows.item(i).office_ext,
+            office_alt: data.rows.item(i).office_alt,
+            residence_ext: data.rows.item(i).residence_ext,
+            residence_alt: data.rows.item(i).residence_alt,
+            address: data.rows.item(i).address,
+            email: data.rows.item(i).email,
+            carrier: data.rows.item(i).carrier
+          });
+        }
+      }
+      this.people.next(people);
+    })
+    .catch(e => console.log(JSON.stringify(e)));
+  }
+
+  addFavorite(cpf) {
+    let people: People[] = [];
+    this.db.executeSql('insert into favorites(cpf) values(?)', [cpf])
+    .then((data) => {
+      this.readFavourites();
+    })
+    .catch(e => console.log(JSON.stringify(e)));
   }
 
   searchPeople(searchString:string) {

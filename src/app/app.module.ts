@@ -20,6 +20,7 @@ import { SqliteDbCopy } from '@ionic-native/sqlite-db-copy/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
 import { ModalComponent } from './components/modal/modal.component';
+import { CallNumber } from '@ionic-native/call-number/ngx';
 
 @NgModule({
   declarations: [ AppComponent, ModalComponent ],
@@ -34,6 +35,7 @@ import { ModalComponent } from './components/modal/modal.component';
     SQLite,
     SqliteDbCopy,
     SpinnerDialog,
+    CallNumber,
     
     DatabaseService,
     ApiService

@@ -19,20 +19,20 @@
   </div>
 
   <ion-list>
-    <ion-item button [href]="'tel:+91' + item.mobile" >
+    <ion-item button (click)="call(item.mobile)" >
       <ion-icon slot="start" name="call">
       </ion-icon>
       <ion-label>
         <h2>{{ item.mobile }}</h2>
         <p> Mobile, {{ item.carrier }} </p>
       </ion-label>
-      <ion-button fill="clear" shape="round" slot="end" color="secondary" [href]="'sms:+91' + item.mobile">
+      <ion-button fill="clear" shape="round" slot="end" color="secondary">
         <ion-icon slot="icon-only" name="chatbubbles"></ion-icon>
       </ion-button>
     </ion-item>
 
     <ion-list *ngFor="let contact of contacts">
-      <ion-item button *ngIf="contact.number" [href]="'tel:+91' + contact.number">
+      <ion-item button *ngIf="contact.number">
         <ion-icon slot="start" name="call">
         </ion-icon>
         <ion-label>

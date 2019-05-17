@@ -34,6 +34,12 @@ export class Tab1Page {
 
   search(searchString) {
     // this.people = this.init.filter((x) => x.name.toLowerCase().indexOf(searchString.toLowerCase()) > -1  );
-    this.database.searchPeople(searchString);
+    
+    if( !searchString ) {
+      this.database.readFavourites();
+    } else {
+      this.database.searchPeople(searchString);
+    }
+    
   }
 }
