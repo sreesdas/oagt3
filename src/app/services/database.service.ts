@@ -123,7 +123,7 @@ export class DatabaseService {
 
   addFavorite(cpf) {
     let people: People[] = [];
-    this.db.executeSql('insert into favorites(cpf) values(?)', [cpf])
+    this.db.executeSql('insert into favorites(cpf) values(?) on conflict(cpf) do update set last_updated=CURRENT_TIMESTAMP;', [cpf])
     .then((data) => {
       this.readFavourites();
     })

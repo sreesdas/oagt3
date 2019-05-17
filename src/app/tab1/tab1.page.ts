@@ -11,7 +11,7 @@ import { ApiService } from '../services/api.service';
 })
 export class Tab1Page {
 
-  private searchString: String;
+  searchString: String;
   people: People[] = [];
 
   constructor( 
