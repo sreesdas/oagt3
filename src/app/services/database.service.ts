@@ -215,7 +215,7 @@ export class DatabaseService {
       office_ext=?, office_alt=?, residence_ext=?, residence_alt=?, address=?, 
       email=?, carrier=? where cpf=?
       `, data ).then(res => {
-      this.readAllPeople();
+      this.readFavourites();
       console.log("Updated Person " + JSON.stringify(res) )
     })
     .catch(e => console.log(JSON.stringify(e)));
@@ -223,16 +223,13 @@ export class DatabaseService {
 
   deletePerson(id:string) {
     this.db.executeSql('delete from people where id=?', [id] ).then(res => {
-      this.readAllPeople();
+      this.readFavourites();
       console.log("Deleted " + id )
     })
     .catch(e => console.log(JSON.stringify(e)));
   }
 
   addPerson(person: any) {
-
-    console.log(JSON.stringify(person));
-
     let data:any = person;
     this.db.executeSql(`
       insert into people( cpf, name, designation, avatar, mobile,
@@ -240,9 +237,10 @@ export class DatabaseService {
       email, carrier ) 
       values(?,?,?,?,?,?,?,?,?,?,?,?)
       `, data ).then(res => {
-      this.readAllPeople();
+      this.readFavourites();
       console.log('Added Person!' + JSON.stringify(res));
     })
     .catch(e => console.log(JSON.stringify(e)));
   }
+
 }
