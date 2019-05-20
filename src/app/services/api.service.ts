@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { DatabaseService } from './database.service';
+import { DatabaseService, People } from './database.service';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
+import { ToastController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ export class ApiService {
     private database: DatabaseService,
     private spinner: SpinnerDialog,
     private nativeStorage: NativeStorage,
+    private toastController: ToastController,
   ) { 
     
   }
@@ -39,7 +41,26 @@ export class ApiService {
           this.requestFetchJournal(lastUpdatedTime);
         }
       );
+  }
 
+  updatePersonalDetails(person: People) {
+    this.http.post( `https://oagtapp.xyz/apis/updatePersonalDetails.php`, person ).subscribe(res => {
+      // this.database.readSinglePerson(person.cpf);
+      this.spinner.hide();
+      this.presentToastWithOptions();
+    }, err => {
+      console.log(JSON.stringify(err));
+      this.spinner.hide();
+    });
+  }
+
+  async presentToastWithOptions() {
+    const toast = await this.toastController.create({
+      duration: 2500,
+      message: 'Please close and reopen the app to reflect the change',
+      position: 'bottom',
+    });
+    toast.present();
   }
 
   requestFetchJournal( lastUpdatedTime: string ) {

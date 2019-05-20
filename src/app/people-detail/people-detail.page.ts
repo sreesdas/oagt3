@@ -41,7 +41,8 @@ export class PeopleDetailPage implements OnInit {
 
     this.database.getDatabaseState().subscribe( ready => {
       if(ready){
-        this.database.readSinglePerson(this.id).then( data => {
+        this.database.readSinglePerson(this.id);
+        this.database.getPerson().subscribe( data => {
           this.item = data;
           this.contacts = [
             { 'name': 'Office Ext.', 'number' : this.item.office_ext },

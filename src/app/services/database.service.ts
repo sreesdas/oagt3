@@ -131,6 +131,7 @@ export class DatabaseService {
   }
 
   searchPeople(searchString:string) {
+  
     let people: People[] = [];
     this.db.executeSql(`select * from people where name like '%${searchString}%' order by name asc`, [])
     .then((data) => {
@@ -185,11 +186,11 @@ export class DatabaseService {
     .catch(e => console.log(JSON.stringify(e)));
   }
 
-  readSinglePerson(id:string): Promise<any> {
-    return this.db.executeSql('select * from people where cpf=?', [id])
+  readSinglePerson(id:string) {
+    let person: People;
+    this.db.executeSql('select * from people where cpf=?', [id])
     .then((data) => {
-
-      return {
+      person = {
         cpf: data.rows.item(0).cpf,
         name: data.rows.item(0).name,
         designation: data.rows.item(0).designation,
@@ -204,6 +205,7 @@ export class DatabaseService {
         carrier: data.rows.item(0).carrier
       };
 
+      this.person.next(person);
     })
     .catch(e => console.log(JSON.stringify(e)));
   }

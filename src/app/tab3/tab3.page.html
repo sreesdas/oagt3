@@ -1,9 +1,48 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
-      Tab Three
+      My Profile
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content >
+
+    <ion-card>
+        <ion-card-header>
+          <ion-card-subtitle> {{ item.designation  }}</ion-card-subtitle>
+          <ion-card-title> {{ item.name }} - {{ item.cpf }} </ion-card-title>
+        </ion-card-header>
+      
+        <ion-card-content>
+            <ion-list>
+                <ion-item>
+                  <ion-label position="floating">Mobile</ion-label>
+                  <ion-input [(ngModel)]="item.mobile"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Office Extension</ion-label>
+                  <ion-input [(ngModel)]="item.office_ext"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Office Alternate</ion-label>
+                  <ion-input [(ngModel)]="item.office_alt"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Res. Extension</ion-label>
+                  <ion-input [(ngModel)]="item.residence_ext"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Res. Alternate</ion-label>
+                  <ion-input [(ngModel)]="item.residence_alt"></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Address</ion-label>
+                  <ion-input [(ngModel)]="item.address"></ion-input>
+                </ion-item>
+                <ion-button (click)="update()" color="primary" expand="block">Update</ion-button>
+              </ion-list>
+        </ion-card-content>
+      </ion-card>
+
+</ion-content>
