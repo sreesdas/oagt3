@@ -21,12 +21,12 @@ export class PeopleDetailPage implements OnInit {
   ) { 
 
     this.item = {
-      cpf: '',
-      name: '',
-      designation: '',
+      cpf: '128238',
+      name: 'sree',
+      designation: 'ee',
       avatar: '',
-      mobile: '',
-      office_ext: '',
+      mobile: '1234',
+      office_ext: '1234',
       office_alt: '',
       residence_ext: '',
       residence_alt: '',
@@ -55,7 +55,25 @@ export class PeopleDetailPage implements OnInit {
   }
 
   call( number: string ) {
-    this.callNumber.callNumber( "+91" + number, true)
+
+    let _number = number;
+
+    switch (number.length) {
+      case 4:
+        _number = "+91381236" + number;
+        break;
+      case 7:
+        _number = "+91381" + number;
+        break;
+      case 10:
+        _number = "+91" + number;
+        break;
+      default:
+        _number = number;
+        break;
+    }
+
+    this.callNumber.callNumber( _number, true)
     .then(res => console.log('Launched dialer!', res))
     .catch(err => console.log('Error launching dialer', err));
 

@@ -96,7 +96,7 @@ export class DatabaseService {
 
   readFavourites() {
     let people: People[] = [];
-    this.db.executeSql(`select p.* from people p inner join favorites f on p.cpf = f.cpf`, [])
+    this.db.executeSql(`select p.* from people p inner join favorites f on p.cpf = f.cpf order by f.last_updated desc`, [])
     .then((data) => {
       if( data.rows.length > 0) {
         for(var i=0; i<data.rows.length; ++i ) {
@@ -132,7 +132,7 @@ export class DatabaseService {
 
   searchPeople(searchString:string) {
     let people: People[] = [];
-    this.db.executeSql(`select * from people where name like '%${searchString}%'`, [])
+    this.db.executeSql(`select * from people where name like '%${searchString}%' order by name asc`, [])
     .then((data) => {
       if( data.rows.length > 0) {
         for(var i=0; i<data.rows.length; ++i ) {
