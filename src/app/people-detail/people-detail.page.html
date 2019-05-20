@@ -11,7 +11,7 @@
 
   <div class="avatar-lg">
     <ion-img *ngIf="item.avatar" [src]="item.avatar"></ion-img>
-    <ion-img *ngIf="!item.avatar" [src]="'http://api.skype.com/users/echo/profile/avatar?size=l'"></ion-img>
+    <ion-img *ngIf="!item.avatar" src="assets/img_avatar.jpg"></ion-img>
     <div class="avatar-text">
       <h2> {{ item.name }} - {{ item.cpf }} </h2>
       <p> {{ item.designation }}</p>

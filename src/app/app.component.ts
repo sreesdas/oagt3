@@ -39,12 +39,12 @@ export class AppComponent {
         {
           name: 'cpf',
           type: 'number',
-          placeholder: 'CPF Number'
+          placeholder: 'CPF No.'
         },
         {
           name: 'mobile',
           type: 'number',
-          placeholder: 'Mobile ( Type anything )'
+          placeholder: 'Mobile No.'
         }
       ],
       buttons: [
@@ -68,6 +68,8 @@ export class AppComponent {
                     },
                     error => console.error('Error storing item', error)
                   );
+                } else {
+                  this.presentToast();
                 }
             })
 
@@ -110,6 +112,15 @@ export class AppComponent {
       })
 
     });
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      duration: 2500,
+      message: 'Invalid Credentials',
+      position: 'bottom',
+    });
+    toast.present();
   }
 
   async presentToastWithOptions() {
