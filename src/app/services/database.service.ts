@@ -132,8 +132,10 @@ export class DatabaseService {
 
   searchPeople(searchString:string) {
   
+    searchString = "%" + searchString + "%";
+
     let people: People[] = [];
-    this.db.executeSql(`select * from people where name like '%?%' or cpf like '%?%' or mobile like '%?%' order by name asc`, [searchString, searchString, searchString])
+    this.db.executeSql("select * from people where name like ? or cpf like ? or mobile like ? order by name asc", [ searchString, searchString, searchString ])
     .then((data) => {
       if( data.rows.length > 0) {
         for(var i=0; i<data.rows.length; ++i ) {
@@ -184,6 +186,26 @@ export class DatabaseService {
       this.people.next(people);
     })
     .catch(e => console.log(JSON.stringify(e)));
+  }
+
+  readCurrentPerson(id:string): Promise<People> {
+    return this.db.executeSql('select * from people where cpf=?', [id])
+    .then((data) => {
+      return {
+        cpf: data.rows.item(0).cpf,
+        name: data.rows.item(0).name,
+        designation: data.rows.item(0).designation,
+        avatar: data.rows.item(0).avatar,
+        mobile: data.rows.item(0).mobile,
+        office_ext: data.rows.item(0).office_ext,
+        office_alt: data.rows.item(0).office_alt,
+        residence_ext: data.rows.item(0).residence_ext,
+        residence_alt: data.rows.item(0).residence_alt,
+        address: data.rows.item(0).address,
+        email: data.rows.item(0).email,
+        carrier: data.rows.item(0).carrier
+      };
+    })
   }
 
   readSinglePerson(id:string) {

@@ -53,21 +53,27 @@ export class Tab3Page {
           if( data.cpf ) {
             this.database.getDatabaseState().subscribe( ready => {
               if(ready){
-                this.database.getPerson().subscribe((person) => {
+                this.database.readCurrentPerson(data.cpf)
+                .then( person => {
                   this.item = person;
-                  console.log(JSON.stringify(this.item));
+                })
+                .catch( err => { 
+                  this.presentToast('Error retrieving user!');
                 });
-                this.database.readSinglePerson(data.cpf);
               }
             })
           }
         },
         error => {
           console.log(JSON.stringify(error))
-          alert('Error login in!');
+          this.presentToast('Error retrieving cache!');
         }
       );
-    })
+    });
+  }
+
+  ionViewDidEnter() {
+    
   }
 
   update() {
