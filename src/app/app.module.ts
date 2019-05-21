@@ -21,6 +21,9 @@ import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
 import { ModalComponent } from './components/modal/modal.component';
 import { CallNumber } from '@ionic-native/call-number/ngx';
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { File } from '@ionic-native/file/ngx';
 
 @NgModule({
   declarations: [ AppComponent, ModalComponent ],
@@ -36,7 +39,9 @@ import { CallNumber } from '@ionic-native/call-number/ngx';
     SqliteDbCopy,
     SpinnerDialog,
     CallNumber,
-    
+    FileChooser,
+    FileTransfer,
+    File,
     DatabaseService,
     ApiService
   ],

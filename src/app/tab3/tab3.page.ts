@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
-import { Platform } from '@ionic/angular';
+import { Platform, ToastController, AlertController } from '@ionic/angular';
 import { DatabaseService, People } from '../services/database.service';
 import { ApiService } from '../services/api.service';
 import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { File } from '@ionic-native/file/ngx'; 
 
 @Component({
   selector: 'app-tab3',
@@ -13,13 +16,19 @@ import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
 export class Tab3Page {
 
   item: People;
+  url: string;
 
   constructor(
     private nativeStorage: NativeStorage,
     private plt: Platform,
     private database: DatabaseService,
     private api: ApiService,
-    private spinner: SpinnerDialog
+    private spinner: SpinnerDialog,
+    private fileChooser: FileChooser,
+    private transfer: FileTransfer, 
+    private file: File,
+    private toastController: ToastController,
+    private alertController: AlertController
   ) {
 
     this.item = {
@@ -65,4 +74,59 @@ export class Tab3Page {
     this.spinner.show();
     this.api.updatePersonalDetails(this.item);
   }
+
+  open() {
+    this.fileChooser.open()
+    .then(uri => {
+      this.url = uri;
+      console.log(uri);
+      this.spinner.show();
+      this.upload();
+    })
+    .catch(e => console.log(e));
+  }
+
+  upload() {
+
+    let options: FileUploadOptions = {
+      fileKey: 'file',
+      fileName: this.item.cpf + '.jpg',
+      mimeType: 'image/jpeg',
+      params: {},
+      headers: {}
+    }
+
+    const cloudUrl = "https://oagtapp.xyz/apis/uploadProfileImage.php";
+    const fileTransfer: FileTransferObject = this.transfer.create();
+
+    fileTransfer.upload( this.url, cloudUrl, options)
+      .then((data) => {
+        let d = JSON.parse(data.response);
+        if( d.status == 'success') {
+          this.presentToast('Succesfully Uploaded');
+        } else {
+          this.presentToast('Upload failed!');
+        }
+        this.spinner.hide();
+      }, (err) => {
+        console.log(JSON.stringify(err));
+        this.presentToast('Upload failed!');
+        this.spinner.hide();
+      }) 
+      .catch((e) => {
+        console.log(JSON.stringify(e));
+        this.presentToast('Upload failed!');
+        this.spinner.hide();
+      });
+  }
+
+  async presentToast(msg: string) {
+    const toast = await this.toastController.create({
+      duration: 2500,
+      message: msg,
+      position: 'bottom',
+    });
+    toast.present();
+  }
+  
 }

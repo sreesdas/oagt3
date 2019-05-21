@@ -133,7 +133,7 @@ export class DatabaseService {
   searchPeople(searchString:string) {
   
     let people: People[] = [];
-    this.db.executeSql(`select * from people where name like '%${searchString}%' order by name asc`, [])
+    this.db.executeSql(`select * from people where name like '%?%' or cpf like '%?%' or mobile like '%?%' order by name asc`, [searchString, searchString, searchString])
     .then((data) => {
       if( data.rows.length > 0) {
         for(var i=0; i<data.rows.length; ++i ) {

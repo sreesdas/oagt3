@@ -10,8 +10,18 @@
 
     <ion-card>
         <ion-card-header>
-          <ion-card-subtitle> {{ item.designation  }}</ion-card-subtitle>
-          <ion-card-title> {{ item.name }} - {{ item.cpf }} </ion-card-title>
+          <!-- <ion-card-subtitle> {{ item.designation  }}</ion-card-subtitle>
+          <ion-card-title> {{ item.name }} - {{ item.cpf }} </ion-card-title> -->
+          <ion-item>
+            <ion-avatar slot="start" (click)="open()" >
+              <img *ngIf="item.avatar" [src]="item.avatar">
+              <img *ngIf="!item.avatar" src="https://cdn4.iconfinder.com/data/icons/user-4/48/edit-user-512.png">
+            </ion-avatar>
+            <ion-label>
+              <h2> {{ item.name }} - {{ item.cpf }} </h2>
+              <p> {{ item.designation  }} </p>
+            </ion-label>
+          </ion-item>
         </ion-card-header>
       
         <ion-card-content>
@@ -43,6 +53,8 @@
                 <ion-button (click)="update()" color="primary" expand="block">Update</ion-button>
               </ion-list>
         </ion-card-content>
+        <!-- <ion-button (click)="open()" color="secondary">Open</ion-button>
+        <ion-button (click)="upload()" color="tertiary">Upload</ion-button> -->
       </ion-card>
 
 </ion-content>
