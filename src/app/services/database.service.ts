@@ -246,7 +246,7 @@ export class DatabaseService {
   }
 
   deletePerson(id:string) {
-    this.db.executeSql('delete from people where id=?', [id] ).then(res => {
+    this.db.executeSql('delete from people where cpf=?', [id] ).then(res => {
       this.readFavourites();
       console.log("Deleted " + id )
     })

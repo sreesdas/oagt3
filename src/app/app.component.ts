@@ -7,6 +7,7 @@ import { ApiService } from './services/api.service';
 import { Router } from '@angular/router';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { HttpClient } from '@angular/common/http';
+import { SpinnerDialog } from '@ionic-native/spinner-dialog/ngx';
 
 @Component({
   selector: 'app-root',
@@ -23,6 +24,7 @@ export class AppComponent {
     private nativeStorage: NativeStorage,
     private alertController: AlertController,
     private toastController: ToastController,
+    private spinner: SpinnerDialog,
     private http: HttpClient
   ) {
     this.initializeApp();
@@ -51,6 +53,8 @@ export class AppComponent {
         {
           text: 'Login',
           handler: (data) => {
+
+            this.spinner.show();
             
             this.http.post('https://oagtapp.xyz/apis/login.php', {
               cpf: data.cpf,
@@ -64,13 +68,22 @@ export class AppComponent {
                   .then(
                     () => {
                       alert.dismiss();
+                      this.spinner.hide();
                       console.log('Stored item!');
                     },
-                    error => console.error('Error storing item', error)
+                    error => {
+                      this.presentToast('Error accessing native storage!');
+                      this.spinner.hide();
+                    }
                   );
                 } else {
-                  this.presentToast();
+                  this.presentToast('Invalid Credentials');
+                  this.spinner.hide();
                 }
+
+            }, err => {
+              this.presentToast('Network unreachable!');
+              this.spinner.hide();
             })
 
             return false;
@@ -114,10 +127,10 @@ export class AppComponent {
     });
   }
 
-  async presentToast() {
+  async presentToast(message: string) {
     const toast = await this.toastController.create({
       duration: 2500,
-      message: 'Invalid Credentials',
+      message: message,
       position: 'bottom',
     });
     toast.present();

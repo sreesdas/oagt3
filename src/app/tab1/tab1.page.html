@@ -12,6 +12,23 @@
       <ion-searchbar debounce="700" showCancelButton animated [(ngModel)]="searchString" (ionChange)="search(searchString)"></ion-searchbar>
     </ion-toolbar>
 
+    <ion-list lines="none" *ngIf="!searchString">
+      <ion-item>
+        <ion-label>
+          SOS
+        </ion-label>
+      </ion-item>
+      <ion-item button (click)="call('+913812363456')">
+        <ion-avatar slot="start">
+          <div class="letter-avatar"> E </div>
+        </ion-avatar>
+        <ion-label>
+          <h2> Emergency Number </h2>
+          <p>(+91) 381 236-3456</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
     <ion-list lines="none">
       <ion-item *ngIf="!searchString">
         <ion-label>
@@ -20,7 +37,8 @@
       </ion-item>
       <ion-item button [routerLink]="'/people-detail/' + item.cpf" *ngFor="let item of people">
         <ion-avatar slot="start">
-          <div class="letter-avatar"> {{ item.name.substr(0,1) }} </div>
+          <div *ngIf="!item.avatar" class="letter-avatar"> {{ item.name.substr(0,1) }} </div>
+          <img *ngIf="item.avatar" [src]="item.avatar" alt="{{ item.name.substr(0,1) }}">
         </ion-avatar> 
         <ion-label>
           <h2>{{ item.name }}</h2>

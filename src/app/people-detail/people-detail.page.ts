@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DatabaseService, People } from '../services/database.service';
 import { CallNumber } from '@ionic-native/call-number/ngx';
+import { Contacts, Contact, ContactField, ContactName } from '@ionic-native/contacts/ngx';
+import { ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-people-detail',
@@ -17,7 +19,9 @@ export class PeopleDetailPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private database: DatabaseService,
-    private callNumber: CallNumber
+    private callNumber: CallNumber,
+    private contactPlugin: Contacts,
+    private toastController: ToastController,
   ) { 
 
     this.item = {
@@ -79,6 +83,28 @@ export class PeopleDetailPage implements OnInit {
     .catch(err => console.log('Error launching dialer', err));
 
     this.database.addFavorite(this.item.cpf);
+  }
+
+  save() {
+    
+    let contact: Contact = this.contactPlugin.create();
+
+    contact.name = new ContactName(null, this.item.name, '');
+    contact.phoneNumbers = [ new ContactField('mobile', this.item.mobile) ];
+
+    contact.save().then(
+      () => this.presentToast('Contact saved'),
+      (error: any) => this.presentToast('Error saving contact!')
+    )
+  }
+
+  async presentToast(message:string) {
+    const toast = await this.toastController.create({
+      duration: 2500,
+      message: message,
+      position: 'bottom',
+    });
+    toast.present();
   }
 
 }

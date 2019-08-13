@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { DatabaseService, People } from '../services/database.service';
 import { ToastController, AlertController } from '@ionic/angular';
 import { ApiService } from '../services/api.service';
+import { CallNumber } from '@ionic-native/call-number/ngx';
 
 @Component({
   selector: 'app-tab1',
@@ -19,6 +20,7 @@ export class Tab1Page {
     private api: ApiService,
     private toast: ToastController,
     private alertController: AlertController,
+    private callNumber: CallNumber,
   ) {
 
     this.database.getDatabaseState().subscribe( ready => {
@@ -42,4 +44,12 @@ export class Tab1Page {
     }
     
   }
+
+  call( _number:string ) {
+
+    this.callNumber.callNumber( _number, true)
+    .then(res => console.log('Launched dialer!', res))
+    .catch(err => console.log('Error launching dialer', err));
+  }
+
 }

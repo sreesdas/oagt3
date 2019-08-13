@@ -24,6 +24,7 @@ import { CallNumber } from '@ionic-native/call-number/ngx';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
 import { FileTransfer } from '@ionic-native/file-transfer/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { Contacts } from '@ionic-native/contacts/ngx';
 
 @NgModule({
   declarations: [ AppComponent, ModalComponent ],
@@ -39,6 +40,7 @@ import { File } from '@ionic-native/file/ngx';
     SqliteDbCopy,
     SpinnerDialog,
     CallNumber,
+    Contacts,
     FileChooser,
     FileTransfer,
     File,

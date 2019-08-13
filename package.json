@@ -21,6 +21,7 @@
     "@angular/platform-browser-dynamic": "^7.2.2",
     "@angular/router": "^7.2.2",
     "@ionic-native/call-number": "^5.6.0",
+    "@ionic-native/contacts": "^5.7.0",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/file": "^5.6.0",
     "@ionic-native/file-chooser": "^5.6.0",
@@ -34,6 +35,7 @@
     "@ionic/angular": "^4.1.0",
     "call-number": "1.0.1",
     "cordova-android": "8.0.0",
+    "cordova-plugin-contacts": "file:../../PLUGINS/cordova-plugin-contacts",
     "cordova-plugin-dbcopy": "2.1.2",
     "cordova-plugin-file": "6.0.1",
     "cordova-plugin-file-transfer": "1.7.1",
@@ -96,7 +98,8 @@
       "mx.ferreyra.callnumber": {},
       "cordova-plugin-filechooser": {},
       "cordova-plugin-file-transfer": {},
-      "cordova-plugin-file": {}
+      "cordova-plugin-file": {},
+      "cordova-plugin-contacts": {}
     },
     "platforms": [
       "android"

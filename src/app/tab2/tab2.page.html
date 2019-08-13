@@ -1,9 +1,23 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="primary">
     <ion-title>
-      Tab Two
+      Important Numbers
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content>
+
+  <ion-list lines="none">
+    <ion-item button (click)="call(contact)" *ngFor="let contact of contacts">
+      <ion-avatar slot="start">
+        <div class="letter-avatar"> {{ contact.name.substr(0,1) }}  </div>
+      </ion-avatar>
+      <ion-label>
+        <h2> {{ contact.name }} </h2>
+        <p> {{ contact.short_number }} </p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
